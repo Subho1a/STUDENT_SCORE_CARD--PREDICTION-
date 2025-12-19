@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Student Performance Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        h2 {
+            font-weight: 600;
+            color: #333;
+        }
+        .result-box {
+            margin-top: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+            color: #222;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card p-4" style="max-width: 600px; margin: auto;">
+        <h2 class="text-center mb-3">🎓 Student Performance Predictor</h2>
+        <p class="text-center text-muted">Enter student details to estimate final exam performance.</p>
+        <form action="/predict" method="POST" id="predictForm">
+
+            <div class="mb-3">
+                <label for="Study_Hours_per_Week" class="form-label">📘 Study Hours per Week</label>
+                <input type="number" step="0.1" class="form-control" id="Study_Hours_per_Week"
+                       name="Study_Hours_per_Week" placeholder="e.g., 15.5" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Attendance_Rate" class="form-label">🕒 Attendance Rate (%)</label>
+                <input type="number" step="0.1" class="form-control" id="Attendance_Rate"
+                       name="Attendance_Rate" placeholder="e.g., 92.5" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Past_Exam_Scores" class="form-label">📊 Past Exam Scores</label>
+                <input type="number" step="0.1" class="form-control" id="Past_Exam_Scores"
+                       name="Past_Exam_Scores" placeholder="e.g., 78.5" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Extracurricular_Activities" class="form-label">⚽ Extracurricular Activities</label>
+                <select class="form-select" id="Extracurricular_Activities" name="Extracurricular_Activities" required>
+                    <option value="" selected disabled>Select option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Predict Score</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="result-box mt-4" id="resultBox">
+            {{ prediction_text }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    // Clear prediction result when user types new input
+    const form = document.getElementById('predictForm');
+    const resultBox = document.getElementById('resultBox');
+    if (form && resultBox) {
+        form.querySelectorAll('input, select').forEach(field => {
+            field.addEventListener('input', () => {
+                resultBox.style.display = 'none';
+            });
+        });
+    }
+</script>
+
+</body>
+</html>
